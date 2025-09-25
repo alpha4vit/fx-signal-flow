@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fx-signal-flow
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: ${spring.datasource.driver-class-name}
+  jpa:
+    hibernate:
+      ddl-auto: update
+logging:
+  level:
+    feign: DEBUG
+    ru.snptech.businessbanyabot: DEBUG
+
+application:
+  telegram:
+    token: 8122227200:AAFsVT0F_uPIzA8SKZPHTSxT7MIyG-vo59A
