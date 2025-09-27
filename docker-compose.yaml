@@ -4,8 +4,8 @@ services:
   app:
     build: .
     container_name: fx-flow-signal
-    depends_on:
-      - postgres
+#    depends_on:
+#      - postgres-fx
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
@@ -15,20 +15,20 @@ services:
     networks:
       - app-network
 
-  postgres-fx:
-    image: postgres:15
-    container_name: postgres-fx
-    restart: always
-    environment:
-      POSTGRES_DB: fx-signal-flow
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5433:5433"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
+#  postgres-fx:
+#    image: postgres:15
+#    container_name: postgres-fx
+#    restart: always
+#    environment:
+#      POSTGRES_DB: fx-signal-flow
+#      POSTGRES_USER: ${POSTGRES_USER}
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#    ports:
+#      - "5433:5433"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#    networks:
+#      - app-network
 
 volumes:
   postgres_data:

@@ -43,6 +43,8 @@ public class UserUpdateScenario extends AbstractScenario {
 
         var chatId = CHAT_ID.getValue(requestContext, Long.class);
 
+        resetToMainMenuContextIfNeeded(chatId, requestContext);
+
         var currentScenario = SCENARIO.getValue(requestContext, ScenarioType.class);
 
         switch (currentScenario) {
@@ -62,6 +64,20 @@ public class UserUpdateScenario extends AbstractScenario {
             default -> {
                 // nothing for now
             }
+        }
+    }
+
+    private void resetToMainMenuContextIfNeeded(Long chatId, Map<String, Object> requestContext) {
+        if (
+            TG_UPDATE.getValue(requestContext).getMessage().hasText()
+                && ("/start".equals(TG_UPDATE.getValue(requestContext).getMessage().getText())
+            )
+        ) {
+            var user = userRepository.findByChatId(chatId);
+
+            SCENARIO.setValue(requestContext, ScenarioType.GREETING_MESSAGE.name());
+
+            userContextService.updateUserContext(user, requestContext);
         }
     }
 }

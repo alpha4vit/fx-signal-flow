@@ -34,6 +34,7 @@ public class UpdateConsumer implements LongPollingSingleThreadUpdateConsumer {
 
             return;
         }
+        
         var chatId = TelegramUtils.extractChatIdFromUpdate(update);
 
         try {

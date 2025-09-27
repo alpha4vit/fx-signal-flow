@@ -33,4 +33,10 @@ public class FxSignalFlowDomainLogicException extends BaseFxSignalFlowException 
         }
     }
 
+    public static class CURRENCY_PAIR_NOT_FOUND extends FxSignalFlowDomainLogicException {
+        public CURRENCY_PAIR_NOT_FOUND(String pair) {
+            super("Валютная пара " + pair + " не найдена!");
+        }
+    }
+
 }

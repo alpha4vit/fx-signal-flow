@@ -1,25 +1,31 @@
 package ru.snptech.fxsignalflow.service.scenario.user;
 
 import org.springframework.stereotype.Component;
+import ru.snptech.fxsignalflow.entity.BotClient;
+import ru.snptech.fxsignalflow.model.common.MessageConstants;
 import ru.snptech.fxsignalflow.repository.ClientRepository;
 import ru.snptech.fxsignalflow.service.scenario.AbstractScenario;
-import ru.snptech.fxsignalflow.service.util.SignalParser;
+import ru.snptech.fxsignalflow.service.signal.SignalParser;
 import ru.snptech.fxsignalflow.telegram.client.TelegramClientAdapter;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ru.snptech.fxsignalflow.model.common.ServiceConstantHolder.TG_UPDATE;
 
 @Component
 public class SignalScenario extends AbstractScenario {
 
+    private final SignalParser signalParser;
     private final ClientRepository clientRepository;
 
     public SignalScenario(
         TelegramClientAdapter telegramClientAdapter,
+        SignalParser signalParser,
         ClientRepository clientRepository
     ) {
         super(telegramClientAdapter);
+        this.signalParser = signalParser;
         this.clientRepository = clientRepository;
     }
 
@@ -27,24 +33,21 @@ public class SignalScenario extends AbstractScenario {
         var tgUpdate = TG_UPDATE.getValue(requestContext);
         var message = tgUpdate.getMessage().getText();
 
-        var parsedSignal = SignalParser.parseSignal(message);
+        var parsedSignal = signalParser.parse(message);
 
-        clientRepository.findAll().forEach((client) ->
+        var clients = clientRepository.findAll();
+
+        clients.forEach((client) ->
             sendDirectMessage(
                 client.getChatId(),
-                parsedSignal
+                parsedSignal.toMessage()
             )
         );
+
+        String names = clients.stream()
+            .map(BotClient::getTitle)
+            .collect(Collectors.joining("\n"));
+
+        sendMessage(requestContext, MessageConstants.SIGNAL_SUCCESSFULLY_SENT.formatted(names));
     }
 }
-
-//XAUUSD SELL NOW @ 3726
-//
-//SL 3730
-//
-//TP1 3720
-//TP2 3715
-//TP3 3710
-//TP4 3705
-//TP5 3700
-//TP6 3690
