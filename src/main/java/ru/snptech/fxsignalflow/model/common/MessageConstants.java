@@ -25,9 +25,9 @@ public class MessageConstants {
             """;
 
     public static final String SIGNAL_SUCCESSFULLY_SENT = """
-            Сигнал успешно отправлен в каналы:
+        Сигнал успешно отправлен в каналы:
             
-            %s
+        %s
         """;
 
 }

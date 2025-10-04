@@ -11,6 +11,25 @@ public record Signal(
 
     public String toMessage() {
         var builder = new StringBuilder();
+
+        builder
+            .append(currencyPair).append(" ")
+            .append(entry).append("\n\n")
+            .append("SL ").append(stopLoss)
+            .append("\n");
+
+        takeProfits.forEach(tp ->
+            builder
+                .append("\n")
+                .append("TP ")
+                .append(tp)
+        );
+
+        return builder.toString();
+    }
+
+    public String toBeautyMessage() {
+        var builder = new StringBuilder();
         builder
             .append("💱 Pair: ").append(currencyPair).append("\n")
             .append(resolveEntryEmoji()).append(entry).append("\n\n")
