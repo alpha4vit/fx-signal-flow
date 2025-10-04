@@ -37,16 +37,33 @@ public class SignalScenario extends AbstractScenario {
 
         var clients = clientRepository.findAll();
 
-        clients.forEach((client) ->
-            sendDirectMessage(
-                client.getChatId(),
-                parsedSignal.toMessage()
-            )
+        if (clients.isEmpty()) {
+            sendMessage(requestContext, MessageConstants.CLIENTS_NOT_FOUND);
+
+            return;
+        }
+
+        var notifiedClients = clients.stream().filter((client) -> {
+                try {
+                    sendDirectMessage(
+                        client.getChatId(),
+                        parsedSignal.toMessage()
+                    );
+
+                    return true;
+                } catch (Throwable t) {
+                    sendMessage(requestContext, MessageConstants.SIGNAL_SENT_ERROR.formatted(client.getTitle()));
+
+                    return false;
+                }
+            }
         );
 
-        String names = clients.stream()
+        String names = notifiedClients
             .map(BotClient::getTitle)
             .collect(Collectors.joining("\n"));
+
+        if (names.isEmpty()) return;
 
         sendMessage(requestContext, MessageConstants.SIGNAL_SUCCESSFULLY_SENT.formatted(names));
     }

@@ -5,8 +5,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MessageConstants {
 
-
-
     public static final String GREETING_MESSAGE =
         """
             Добрый день, %s, добро пожаловать в бот для отправки сигналов!
@@ -28,6 +26,15 @@ public class MessageConstants {
         Сигнал успешно отправлен в каналы:
             
         %s
+        """;
+
+    public static final String SIGNAL_SENT_ERROR = """
+        Ошибка отправки сигнала в канал: %s
+        """;
+
+
+    public static final String CLIENTS_NOT_FOUND = """
+        Ошибка отправки сигнала, подписанные каналы не найдены
         """;
 
 }

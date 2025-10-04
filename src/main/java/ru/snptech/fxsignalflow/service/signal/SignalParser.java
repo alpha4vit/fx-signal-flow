@@ -35,7 +35,7 @@ public class SignalParser {
         Matcher matcher = HEADER_PATTERN.matcher(text);
 
         if (matcher.find()) {
-            return parseCurrencyPair(matcher.group(1));
+            return matcher.group(1);
         }
 
         throw new FxSignalFlowDomainLogicException.UNABLE_TO_PARSE_SIGNAL();
