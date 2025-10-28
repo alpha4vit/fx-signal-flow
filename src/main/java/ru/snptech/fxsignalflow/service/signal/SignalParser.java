@@ -18,9 +18,9 @@ public class SignalParser {
     private final CurrencyProvider currencyProvider;
 
     private static final Integer MAX_TAKE_PROFITS_COUNT = 6;
-    private static final Pattern HEADER_PATTERN = Pattern.compile("([A-Z]+)\\s+(BUY|SELL)\\s+NOW\\s*@\\s*(\\d+(?:\\.\\d+)?)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern HEADER_PATTERN = Pattern.compile("([A-Z]+)\\s+(BUY|SELL)\\s+(\\d+(?:\\.\\d+)?)", Pattern.CASE_INSENSITIVE);
     private static final Pattern SL_PATTERN = Pattern.compile("SL\\s*(\\d+(?:\\.\\d+)?)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern TP_PATTERN = Pattern.compile("TP\\d+\\s*(\\d+(?:\\.\\d+)?)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern TP_PATTERN = Pattern.compile("TP\\s*(\\d+(?:\\.\\d+)?)", Pattern.CASE_INSENSITIVE);
 
     public Signal parse(String text) {
         String pair = parsePair(text);
@@ -48,7 +48,7 @@ public class SignalParser {
             String direction = matcher.group(2).toUpperCase();
             String price = matcher.group(3);
 
-            return direction + " NOW @ " + price;
+            return direction + " " + price;
         }
 
         throw new FxSignalFlowDomainLogicException.UNABLE_TO_PARSE_SIGNAL();
