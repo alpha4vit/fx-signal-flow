@@ -10,16 +10,16 @@ public class MessageConstants {
             Добрый день, %s, добро пожаловать в бот для отправки сигналов!
                         
             Формат для отправки:
-            XAUUSD SELL NOW @ 3726
+            XAUUSD SELL 3726
                         
             SL 3730
                         
-            TP1 3720
-            TP2 3715
-            TP3 3710
-            TP4 3705
-            TP5 3700
-            TP6 3690
+            TP 3720
+            TP 3715
+            TP 3710
+            TP 3705
+            TP 3700
+            TP 3690
             """;
 
     public static final String SIGNAL_SUCCESSFULLY_SENT = """

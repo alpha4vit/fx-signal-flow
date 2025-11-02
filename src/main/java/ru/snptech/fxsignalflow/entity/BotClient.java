@@ -7,8 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import ru.snptech.fxsignalflow.model.client.ClientStatus;
+import ru.snptech.fxsignalflow.model.translate.Language;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,4 +33,16 @@ public class BotClient {
     @CreationTimestamp
     private Instant createdAt;
 
+    @Builder.Default
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "client_consumers",
+        joinColumns = @JoinColumn(name = "producer_id"),
+        inverseJoinColumns = @JoinColumn(name = "consumer_id")
+    )
+    private List<BotClient> consumers = Collections.emptyList();
+
+    @Builder.Default
+    @Enumerated(value = EnumType.STRING)
+    private Language language = Language.RU;
 }

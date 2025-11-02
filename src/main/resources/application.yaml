@@ -20,3 +20,5 @@ logging:
 application:
   telegram:
     token: 8122227200:AAFsVT0F_uPIzA8SKZPHTSxT7MIyG-vo59A
+  translator:
+    url: http://host.docker.internal:5000

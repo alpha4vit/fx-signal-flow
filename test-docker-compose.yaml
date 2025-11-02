@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  business-banya:
+    image: alpha4vit/business_banya_bot-app:v40
+    container_name: business-banya
+    depends_on:
+      - postgres-banya
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-banya:5432/business_banya
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8080:8080"
+    networks:
+      - banya
+
+  postgres-banya:
+    image: postgres:15
+    container_name: postgres-banya
+    restart: always
+    environment:
+      POSTGRES_DB: business_banya
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - banya
+
+  fx-signal-flow:
+    image: alpha4vit/fx-signal-flow-app:v1.5
+    container_name: fx-flow-signal
+    depends_on:
+      - postgres-fx
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/fx_signal_flow
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      APPLICATION_TELEGRAM_TOKEN: 8441169880:AAFRaZugi4_EdRLJNrq4ctJsYsYQdJ9LbWI
+      SERVER_PORT: 8081
+    network_mode: "host"
+
+
+  postgres-fx:
+    image: postgres:15
+    container_name: postgres-fx
+    restart: always
+    environment:
+      POSTGRES_DB: fx_signal_flow
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_fx:/var/lib/postgresql/data
+    networks:
+      - fx-signal
+
+  test-fx-signal-flow:
+    image: alpha4vit/fx-signal-flow-app:v1.6
+    container_name: test-fx-flow-signal
+    depends_on:
+      - postgres-fx
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5434/fx_signal_flow
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      APPLICATION_TELEGRAM_TOKEN: 8122227200:AAFsVT0F_uPIzA8SKZPHTSxT7MIyG-vo59A
+      SERVER_PORT: 8082
+    network_mode: "host"
+
+
+  test-postgres-fx:
+    image: postgres:15
+    container_name: postgres-fx
+    restart: always
+    environment:
+      POSTGRES_DB: fx_signal_flow
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_fx:/var/lib/postgresql/data
+    networks:
+      - fx-signal
+
+volumes:
+  postgres_data:
+  postgres_fx:
+
+networks:
+  banya:
+    driver: bridge
+  fx-signal:
+    driver: bridge

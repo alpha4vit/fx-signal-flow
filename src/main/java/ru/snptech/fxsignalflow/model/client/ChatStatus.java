@@ -1,7 +1,5 @@
 package ru.snptech.fxsignalflow.model.client;
 
-import org.checkerframework.checker.units.qual.C;
-
 public enum ChatStatus {
     MEMBER("member"),
     ADMIN("administrator"),

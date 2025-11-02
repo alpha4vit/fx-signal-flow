@@ -18,6 +18,8 @@ public class BotUpdateScenario {
 
     @Transactional
     public void invoke(Update update) {
+        if (!update.hasMyChatMember()) return;
+
         var memberUpdated = update.getMyChatMember();
         var chat = memberUpdated.getChat();
         var chatType = ChatType.fromValue(chat.getType());
@@ -38,5 +40,4 @@ public class BotUpdateScenario {
             }
         }
     }
-
 }
